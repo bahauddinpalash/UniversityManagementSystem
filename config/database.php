@@ -1,15 +1,17 @@
 <?php
-// Retrieve Railway MySQL Private/Public URL or fall back to individual variables
+// Railway automatically provides MYSQL_URL or MYSQL_PRIVATE_URL
 $db_url = getenv('MYSQL_PRIVATE_URL') ?: getenv('MYSQL_URL');
 
 if ($db_url) {
+    // Parse the connection URL provided by Railway
     $dbopts = parse_url($db_url);
-    $host = $dbopts['host'] ?? '127.0.0.1';
+    $host = $dbopts['host'];
     $port = $dbopts['port'] ?? 3306;
-    $user = $dbopts['user'] ?? 'root';
-    $pass = $dbopts['pass'] ?? '';
-    $db   = ltrim($dbopts['path'] ?? '', '/');
+    $user = $dbopts['user'];
+    $pass = $dbopts['pass'];
+    $db   = ltrim($dbopts['path'], '/');
 } else {
+    // Local fallback for development (XAMPP/WAMP)
     $host = getenv('DB_HOST') ?: '127.0.0.1';
     $port = getenv('DB_PORT') ?: '3306';
     $user = getenv('DB_USER') ?: 'root';
@@ -29,6 +31,5 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    // Return explicit error message instead of crashing silently with HTTP 500
-    die("Database Connection Error: " . $e->getMessage());
+    throw new \PDOException("Database connection failed: " . $e->getMessage(), (int)$e->getCode());
 }
