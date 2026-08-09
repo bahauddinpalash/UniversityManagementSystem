@@ -4,7 +4,7 @@ $host = getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: '127.0.0.1';
 $port = getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: '3306';
 $user = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
 $pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '';
-$db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'unimanage_db';
+$db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'university_db.sql';
 
 $charset = 'utf8mb4';
 $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
