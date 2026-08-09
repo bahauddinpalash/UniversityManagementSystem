@@ -1,13 +1,17 @@
 <?php
-$host     = getenv('MYSQLHOST')     ?: 'localhost';
-$user     = getenv('MYSQLUSER')     ?: 'root';
-$password = getenv('MYSQLPASSWORD') ?: 'skontorpiWoYZBczmgBJadkgYtmolyJd';
-$database = getenv('MYSQLDATABASE') ?: 'railway';
-$port     = getenv('MYSQLPORT')     ?: '3306';
+$host = "localhost";
+$db   = "university_db";
+$user = "root";
+$pass = "";
+$charset = "utf8mb4";
 
-$conn = new mysqli($host, $user, $password, $database, $port);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    exit("Database connection failed. Check config/database.php and import database/university.sql");
 }
-?>
